@@ -1,0 +1,15 @@
+version: '2.3'
+
+services:
+  wt-server:
+    build: ./server
+    volumes:
+      - ./server/src:/home/server/src
+    ports:
+      - "8686:8686"
+      - "8080:8080"
+      - "9222:9222"
+    environment:
+      NODE_ENV: development
+
+    command: /home/server/node_modules/.bin/nodemon --watch src/ --inspect-brk=0.0.0.0:9222 --nolazy src/index.js

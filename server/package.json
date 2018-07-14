@@ -1,0 +1,22 @@
+{
+  "name": "wt-server",
+  "version": "1.0.0",
+  "description": "WalkieTalkie server",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "docker build -t wt-server .",
+    "debug": "nodemon --watch src/ --inspect-brk=0.0.0.0:9222 --nolazy src/index.js",
+    "docker-debug": "docker-compose -f ../docker-compose.yml up --detach",
+    "start": "node src/index.js"
+  },
+  "author": "home@seank.com",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.3",
+    "express-fileupload": "^0.4.0",
+    "ws": "^5.2.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.1"
+  }
+}
