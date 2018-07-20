@@ -1,5 +1,5 @@
 # wt-server
-A WebSocket server that accepts WAV files and shares them with all connections
+A WebSocket server that accepts WAV files either from WebSocket connections or a RESTful endpoint and shares them with all connections
 
 ## Preparing the project
 
@@ -36,5 +36,5 @@ $ docker-compose up
 In the terminal of your choice navigate to the server folder and run one of the following commands
 
 ```bash
-$ curl -v -X POST "http://localhost:8080/broadcast" -F "file=@intro.wav"
+$ curl -v -X POST "http://localhost:8080/broadcast" -F "file=@file.wav"
 ```
