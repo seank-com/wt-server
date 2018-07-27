@@ -21,21 +21,52 @@ var flatten = function(obj) {
         });
         return values;
     },
+    sendInChunks = function (client, data) {
+        var chunks = [],
+            sendNextChunk = function (err) {
+                options = {
+                    binary: true,
+                    fin: true
+                };
+
+                if (err) {
+                    console.log("ERROR: send failed");
+                    console.log(err);
+                    chunks = [];
+                    client.isBusy = false;
+                } else {
+                    options.fin = (chunks.length === 1);
+                    client.isBusy = (chunks.length !== 0);
+
+                    if (client.isBusy) {
+                        console.log("Sending chunk");
+                        client.send(chunks.shift(), options, sendNextChunk);
+                    } else {
+                        console.log("Send completed");
+                    }
+                }
+            },
+            start = 0,
+            end = 0;
+
+        while (end < data.length) {
+            end = start + 32000;
+            if (end > data.length) {
+                end = data.length;
+            }
+
+            chunks.push(data.slice(start, end));
+            start = end;
+        }
+        sendNextChunk();
+    },
     broadcast = function (data, source) {
         var count = 0;
         console.log("Sending data");
         wss.clients.forEach((client) => {
+
             if (client !== source && client.readyState === WebSocket.OPEN && client.isBusy === false) {
-                client.isBusy = true;
-                client.send(data, (err) => {
-                    if (err) {
-                        console.log("ERROR: send failed");
-                        console.log(err);
-                    } else {
-                        console.log("Send completed");
-                    }
-                    client.isBusy = false;
-                });
+                sendInChunks(client, data);
                 count += 1;
             }
         })
