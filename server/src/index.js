@@ -104,7 +104,7 @@ wss.on('connection', (ws) => {
         ws.pong(data);
     })
     ws.on('message', (data) => {
-        fs.writeFileSync('lastMsg.wav', data);
+//        fs.writeFileSync('lastMsg.wav', data);
         console.log('message received: size %s', data.length);
         
         broadcast(data, ws);

@@ -1,22 +1,23 @@
 
-FROM node:10.2-alpine AS base
+FROM arm32v7/node AS base
 
-RUN apk update && apk add --no-cache tini
-
-ENTRYPOINT ["/sbin/tini", "--"]
+#ENV TINI_VERSION v0.18.0
+#ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+#RUN chmod +x /tini
+#ENTRYPOINT ["/tini", "--"]
 
 WORKDIR /home/server
 
 FROM base AS builder
 
-RUN apk update && apk add --no-cache \
-    git \
-    python \
-    python-dev \
-    py-pip \
-    build-base \
-    libc6-compat \
-    && pip install virtualenv
+#RUN apt-get update && apt-get install -y \
+#    git \
+#    python \
+#    python-dev \
+#    pip \
+#    build-base \
+#    libc6-compat \
+#    && pip install virtualenv
 
 COPY package*.json ./
 
