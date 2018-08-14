@@ -31,6 +31,7 @@ COPY --from=builder /home/server .
 ENV NODE_ENV=production
 
 EXPOSE 8686
+EXPOSE 8080
 
 USER node
 
